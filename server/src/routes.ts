@@ -1,0 +1,44 @@
+import { Router } from 'express';
+import admin from './modules/admin/admin.routes';
+import auth from './modules/auth/auth.routes';
+import authenticity from './modules/authenticity/authenticity.routes';
+import closet from './modules/closet/closet.routes';
+import collections from './modules/collections/collections.routes';
+import community from './modules/community/community.routes';
+import consultations from './modules/consultations/consultations.routes';
+import inbox from './modules/inbox/inbox.routes';
+import jobs from './modules/jobs/jobs.routes';
+import map from './modules/map/map.routes';
+import media from './modules/media/media.routes';
+import museum from './modules/museum/museum.routes';
+import orders from './modules/orders/orders.routes';
+import payments from './modules/payments/payments.routes';
+import products from './modules/products/products.routes';
+import site from './modules/site/site.routes';
+import support from './modules/support/support.routes';
+import team from './modules/team/team.routes';
+import users from './modules/users/users.routes';
+
+const router = Router();
+
+router.use('/auth', auth);
+router.use('/users', users);
+router.use('/site', site);
+router.use('/collections', collections);
+router.use('/products', products);
+router.use('/consultations', consultations);
+router.use('/orders', orders);
+router.use('/payments', payments);
+router.use('/closet', closet);
+router.use('/inbox', inbox);
+router.use('/authenticity', authenticity);
+router.use('/map', map);
+router.use('/museum', museum);
+router.use('/community', community);
+router.use('/team', team);
+router.use('/support', support);
+router.use('/media', media);
+router.use('/admin', admin);
+router.use('/internal/jobs', jobs);
+
+export default router;
