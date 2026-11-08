@@ -1,33 +1,4 @@
-import { Link } from 'react-router-dom'
-import { useMyConsultations } from '../api/consultations'
-import ErrorMessage from '../components/ui/ErrorMessage'
-import LoadMore from '../components/ui/LoadMore'
-import Loading from '../components/ui/Loading'
-import StatusBadge from '../components/ui/StatusBadge'
-import { usePageTitle } from '../hooks/usePageTitle'
-import { formatDate, humanize } from '../lib/format'
-
-export default function ConsultationsPage() {
-  usePageTitle('My consultations')
-  const list = useMyConsultations()
-  return (
-    <section>
-      <h1>My consultations</h1>
-      <p>
-        <Link to="/account/consultations/new">Book a consultation</Link>
-      </p>
-      {list.isLoading ? <Loading /> : null}
-      <ErrorMessage error={list.error} />
-      {!list.isLoading && list.items.length === 0 ? <p>No consultations yet.</p> : null}
-      <ul>
-        {list.items.map((c) => (
-          <li key={c.id}>
-            <Link to={`/account/consultations/${c.id}`}>{humanize(c.type)}</Link> · {formatDate(c.scheduledAt ?? c.requestedSlot, true)} ·{' '}
-            <StatusBadge status={c.status} />
-          </li>
-        ))}
-      </ul>
-      <LoadMore hasNextPage={!!list.hasNextPage} isFetchingNextPage={list.isFetchingNextPage} onClick={() => void list.fetchNextPage()} />
-    </section>
-  )
-}
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
+import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
+export default function ConsultationsPage(){return <PageShell><Intro eyebrow="Private salon" title="Your consultations" description="Appointments and conversations with the atelier, all in one place." action={<Link to="/new-consultation" className="btn-primary">Book a consultation <Plus size={14}/></Link>}/><div className="grid gap-4 md:grid-cols-2"><Link to="/consultation" className="panel p-6"><div className="flex items-center justify-between"><span className="eyebrow">Upcoming · Oct 5</span><span className="rounded-full bg-bronze-light px-3 py-1 text-[9px] uppercase tracking-wider">Confirmed</span></div><h2 className="serif mt-4 text-2xl">Private fitting & measurements</h2><p className="mt-2 text-xs text-ink-soft">Monday · 2:00 PM · Atelier appointment</p><div className="mt-6 flex items-center justify-between border-t border-border pt-4 text-xs"><span>View appointment details</span><ArrowUpRight size={15}/></div></Link><div className="panel p-6"><div className="eyebrow">Past · Sep 12</div><h2 className="serif mt-4 text-2xl">Design discovery call</h2><p className="mt-2 text-xs text-ink-soft">Completed · 30 minutes</p><div className="mt-6 border-t border-border pt-4 text-xs text-ink-faint">Your consultation notes are available in your inbox.</div></div></div></PageShell>}

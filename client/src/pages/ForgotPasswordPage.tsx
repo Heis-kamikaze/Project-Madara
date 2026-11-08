@@ -1,45 +1,4 @@
-import { useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
-import { authErrorMessage } from '../auth/errors'
-import { useAuth } from '../auth/useAuth'
-import Field from '../components/ui/Field'
-import { usePageTitle } from '../hooks/usePageTitle'
-
-export default function ForgotPasswordPage() {
-  usePageTitle('Reset your password')
-  const { resetPassword } = useAuth()
-  const [email, setEmail] = useState('')
-  const [sent, setSent] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  async function onSubmit(e: FormEvent) {
-    e.preventDefault()
-    setError(null)
-    try {
-      await resetPassword(email.trim())
-      setSent(true)
-    } catch (err) {
-      setError(authErrorMessage(err))
-    }
-  }
-
-  return (
-    <section>
-      <h1>Reset your password</h1>
-      {sent ? (
-        <p role="status">If an account exists for {email}, a reset link is on its way.</p>
-      ) : (
-        <form onSubmit={onSubmit}>
-          <Field label="Email">
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" required />
-          </Field>
-          <button type="submit">Send reset link</button>
-          {error ? <p role="alert">{error}</p> : null}
-        </form>
-      )}
-      <p>
-        <Link to="/login">Back to sign in</Link>
-      </p>
-    </section>
-  )
-}
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
+import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
+export default function ForgotPasswordPage(){return <PageShell header={false}><div className="mx-auto max-w-md py-10 md:py-20"><Link to="/" className="serif block text-center text-2xl italic tracking-widest">ARADAM</Link><div className="panel mt-10 p-7 md:p-9"><div className="eyebrow">Membership support</div><h1 className="serif mt-3 text-4xl">Forgot password?</h1><p className="mt-3 text-sm leading-6 text-ink-soft">Enter the email associated with your membership. We will send a link to help you return to the atelier.</p><div className="mt-7"><Field label="Email address" placeholder="you@example.com" type="email"/></div><Button>Send reset link <ArrowRight size={14}/></Button><p className="mt-6 text-center text-xs text-ink-soft"><Link to="/login" className="underline">Back to sign in</Link></p></div></div></PageShell>}

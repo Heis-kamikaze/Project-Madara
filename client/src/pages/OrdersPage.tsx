@@ -1,33 +1,4 @@
-import { Link } from 'react-router-dom'
-import { useMyOrders } from '../api/orders'
-import ErrorMessage from '../components/ui/ErrorMessage'
-import LoadMore from '../components/ui/LoadMore'
-import Loading from '../components/ui/Loading'
-import StatusBadge from '../components/ui/StatusBadge'
-import { usePageTitle } from '../hooks/usePageTitle'
-import { formatDate, formatNaira } from '../lib/format'
-
-export default function OrdersPage() {
-  usePageTitle('My orders')
-  const orders = useMyOrders()
-  return (
-    <section>
-      <h1>My orders</h1>
-      {orders.isLoading ? <Loading /> : null}
-      <ErrorMessage error={orders.error} />
-      {!orders.isLoading && orders.items.length === 0 ? (
-        <p>
-          You have not placed an order yet. <Link to="/pieces">Browse pieces</Link>
-        </p>
-      ) : null}
-      <ul>
-        {orders.items.map((o) => (
-          <li key={o.id}>
-            <Link to={`/account/orders/${o.id}`}>{o.orderNumber}</Link> · {formatDate(o.createdAt)} · {formatNaira(o.totalNgn)} · <StatusBadge status={o.status} />
-          </li>
-        ))}
-      </ul>
-      <LoadMore hasNextPage={!!orders.hasNextPage} isFetchingNextPage={orders.isFetchingNextPage} onClick={() => void orders.fetchNextPage()} />
-    </section>
-  )
-}
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
+import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
+export default function OrdersPage(){return <PageShell><Intro eyebrow="Your purchases" title="Order history" description="Every piece you have chosen, from confirmation to delivery."/><div className="space-y-4"><Link to="/order" className="panel flex flex-wrap items-center gap-5 p-5 md:p-6"><Swatch kind="flame" className="h-24 w-20 shrink-0"/><div className="min-w-[180px] flex-1"><div className="eyebrow">AR—10482 · 06 Oct 2026</div><h2 className="serif mt-1 text-2xl">Flame Polo & Garden Wrap</h2><p className="mt-1 text-xs text-ink-faint">2 pieces · ₦109,500</p></div><div className="text-right"><span className="rounded-full bg-bronze-light px-3 py-1.5 text-[9px] font-semibold uppercase tracking-wider">In progress</span><p className="mt-3 text-xs underline">View order</p></div></Link><Link to="/order" className="panel flex flex-wrap items-center gap-5 p-5 md:p-6"><Swatch kind="clay" className="h-24 w-20 shrink-0"/><div className="min-w-[180px] flex-1"><div className="eyebrow">AR—09812 · 19 Aug 2026</div><h2 className="serif mt-1 text-2xl">Desert Form</h2><p className="mt-1 text-xs text-ink-faint">1 piece · ₦52,000</p></div><div className="text-right"><span className="rounded-full bg-ivory-alt px-3 py-1.5 text-[9px] font-semibold uppercase tracking-wider">Delivered</span><p className="mt-3 text-xs underline">View order</p></div></Link></div></PageShell>}

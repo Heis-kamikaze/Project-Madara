@@ -1,13 +1,4 @@
-import { Link } from 'react-router-dom'
-import { usePageTitle } from '../hooks/usePageTitle'
-
-export default function ForbiddenPage() {
-  usePageTitle('No access')
-  return (
-    <section>
-      <h1>You do not have access to this page</h1>
-      <p>Your role does not include this area. If you think that is a mistake, ask the owner to review your role.</p>
-      <Link to="/">Back to the homepage</Link>
-    </section>
-  )
-}
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
+import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
+export default function ForbiddenPage(){return <PageShell header={false}><div className="mx-auto flex min-h-[80vh] max-w-xl flex-col items-center justify-center text-center"><div className="eyebrow">403 · Private atelier</div><h1 className="serif mt-4 text-6xl">This room is<br/><i>not yours yet.</i></h1><p className="mt-5 max-w-sm text-sm leading-7 text-ink-soft">This part of the atelier is reserved for verified members. Sign in with your account or return to the public collection.</p><div className="mt-8 flex gap-3"><Link to="/login" className="btn-primary">Sign in</Link><Link to="/" className="btn-outline">Return home</Link></div></div></PageShell>}

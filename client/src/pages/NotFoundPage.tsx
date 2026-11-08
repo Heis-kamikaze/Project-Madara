@@ -1,13 +1,4 @@
-import { Link } from 'react-router-dom'
-import { usePageTitle } from '../hooks/usePageTitle'
-
-export default function NotFoundPage() {
-  usePageTitle('Page not found')
-  return (
-    <section>
-      <h1>Page not found</h1>
-      <p>The page you are looking for does not exist or has moved.</p>
-      <Link to="/">Back to the homepage</Link>
-    </section>
-  )
-}
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
+import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
+export default function NotFoundPage(){return <PageShell header={false}><div className="mx-auto flex min-h-[80vh] max-w-xl flex-col items-center justify-center text-center"><div className="eyebrow">404 · Off the map</div><h1 className="serif mt-4 text-7xl">A missing<br/><i>piece.</i></h1><p className="mt-5 max-w-sm text-sm leading-7 text-ink-soft">We cannot find the page you are looking for. It may have moved into the archive.</p><Link to="/" className="btn-primary mt-8">Return to the atelier <ArrowRight size={14}/></Link></div></PageShell>}

@@ -1,15 +1,4 @@
-import { usePageTitle } from '../hooks/usePageTitle'
-
-/**
- * Placeholder: the donut menu lists "Collaborations", but the API has no collaborations
- * module yet. When one exists, add src/api/collaborations.ts and render it here.
- */
-export default function CollaborationsPage() {
-  usePageTitle('Collaborations')
-  return (
-    <section>
-      <h1>Collaborations</h1>
-      <p>Collaborations will appear here soon.</p>
-    </section>
-  )
-}
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
+import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
+export default function CollaborationsPage(){return <PageShell><Intro eyebrow="In good company" title="Collaborations" description="Limited-run pieces made with guest designers, artists and partner ateliers." action={<span className="eyebrow">Price · Newest</span>}/><div className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3"><ProductCard name="Crimson Study" price="₦62,000" kind="espresso"/><ProductCard name="Garden / Form" price="₦58,000" kind="garden"/><ProductCard name="Clay Objects" price="₦72,000" kind="clay"/></div></PageShell>}

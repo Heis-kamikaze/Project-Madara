@@ -1,33 +1,4 @@
-import { useMuseum } from '../api/museum'
-import ErrorMessage from '../components/ui/ErrorMessage'
-import Loading from '../components/ui/Loading'
-import { usePageTitle } from '../hooks/usePageTitle'
-
-/** Curated gallery of custom pieces. */
-export default function MuseumPage() {
-  usePageTitle('Museum')
-  const { data, isLoading, error } = useMuseum()
-  return (
-    <section>
-      <h1>Museum</h1>
-      {isLoading ? <Loading /> : null}
-      <ErrorMessage error={error} />
-      {data && data.length === 0 ? <p>The museum is being curated. Check back soon.</p> : null}
-      <ul>
-        {data?.map((entry) => (
-          <li key={entry.id}>
-            <article>
-              <h2>{entry.title}</h2>
-              <div>
-                {entry.imageUrls.map((url) => (
-                  <img key={url} src={url} alt={entry.title} loading="lazy" />
-                ))}
-              </div>
-              {entry.story ? <p>{entry.story}</p> : null}
-            </article>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )
-}
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
+import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
+export default function MuseumPage(){return <PageShell><Intro eyebrow="The archive · Objects with a past" title="Museum" description="Pieces that shaped the house. Sold-out, experimental and archival work, held here as objects rather than products."/><article className="grid gap-8 md:grid-cols-[1.15fr_.85fr]"><Swatch kind="vase" className="aspect-[1.05]"/><div className="flex flex-col justify-center"><div className="eyebrow">Object no. 001 · March 2024</div><h2 className="serif mt-3 text-4xl">The first Garden prototype</h2><p className="mt-5 text-sm leading-7 text-ink-soft">The original prototype for the Garden Collection's granny-square construction — hand-pinned over six weeks before the first stitch. It began as an experiment in colour and became the language of a collection.</p><div className="rule my-7"/><div className="grid grid-cols-2 gap-5"><div><span className="text-[10px] uppercase tracking-widest text-ink-faint">Material</span><p className="mt-1 text-sm">Cotton yarn</p></div><div><span className="text-[10px] uppercase tracking-widest text-ink-faint">Status</span><p className="mt-1 text-sm">Archive only</p></div></div><span className="mt-8 text-xs text-ink-faint">Not available for purchase</span></div></article></PageShell>}
