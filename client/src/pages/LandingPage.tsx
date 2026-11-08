@@ -16,6 +16,10 @@ export default function LandingPage() {
       {landing?.subheadline ? <p>{landing.subheadline}</p> : null}
       {landing?.featuredCollectionId ? <Link to={`/collections/${landing.featuredCollectionId}`}>Explore the collection</Link> : null}
       <ErrorMessage error={error} />
+
+      <div>
+        
+      </div>
     </section>
   )
 }
