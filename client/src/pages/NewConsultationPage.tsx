@@ -1,4 +1,121 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
-import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
-export default function NewConsultationPage(){return <PageShell><BackLink to="/consultations"/><Intro eyebrow="Private salon" title="Book a consultation" description="Choose a date and tell us a little about what you would like to create."/><div className="grid gap-8 lg:grid-cols-[1fr_.75fr]"><section className="panel p-6 md:p-8"><div className="flex items-center justify-between"><h2 className="serif text-2xl">October 2026</h2><div className="flex gap-2"><button className="rounded-full border border-border p-2"><ArrowLeft size={14}/></button><button className="rounded-full border border-border p-2"><ArrowRight size={14}/></button></div></div><div className="mt-6 grid grid-cols-7 gap-2 text-center text-[10px] text-ink-faint">{['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=><span key={x}>{x}</span>)}{Array.from({length:35},(_,i)=><button key={i} className={`aspect-square rounded-full text-xs ${i===8?'bg-ink text-ivory':'hover:bg-ivory-alt'}`}>{i<3||i>32?'':i-2}</button>)}</div><div className="rule my-6"/><div className="eyebrow mb-3">Available times · Monday, October 5</div><div className="grid grid-cols-3 gap-2">{['10:00 AM','12:00 PM','2:00 PM','3:30 PM','4:00 PM','5:00 PM'].map((t,i)=><button key={t} className={`rounded-full border px-3 py-2.5 text-xs ${i===2?'border-ink bg-ink text-ivory':'border-border'}`}>{t}</button>)}</div></section><section><div className="space-y-4"><Field label="Your name" placeholder="Full name"/><Field label="Email address" placeholder="you@example.com" type="email"/><div><Label>What would you like to discuss?</Label><textarea className="field min-h-32 resize-y" placeholder="Measurements, a custom piece, an idea..."/></div><div><Label>Consultation format</Label><select className="field"><option>Atelier appointment</option><option>Video consultation</option></select></div><Button>Confirm October 5, 2pm</Button></div></section></div></PageShell>}
+import { Link } from "react-router-dom";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  Clock3,
+  Heart,
+  Mail,
+  MapPin,
+  Minus,
+  Plus,
+  ShieldCheck,
+  ShoppingBag,
+  SlidersHorizontal,
+  Sparkles,
+  Star,
+  Truck,
+} from "lucide-react";
+import {
+  PageShell,
+  Intro,
+  Label,
+  Field,
+  Button,
+  Swatch,
+  Price,
+  ProductCard,
+  CollectionCard,
+  BackLink,
+  Stat,
+  EmptyState,
+} from "../components/Ui";
+export default function NewConsultationPage() {
+  return (
+    <PageShell>
+      <BackLink to="/consultations" />
+      <Intro
+        eyebrow="Private salon"
+        title="Book a consultation"
+        description="Choose a date and tell us a little about what you would like to create."
+      />
+      <div className="grid gap-8 lg:grid-cols-[1fr_.75fr]">
+        <section className="panel p-6 md:p-8">
+          <div className="flex items-center justify-between">
+            <h2 className="serif text-2xl">October 2026</h2>
+            <div className="flex gap-2">
+              <button className="rounded-full border border-border p-2">
+                <ArrowLeft size={14} />
+              </button>
+              <button className="rounded-full border border-border p-2">
+                <ArrowRight size={14} />
+              </button>
+            </div>
+          </div>
+          <div className="mt-6 grid grid-cols-7 gap-2 text-center text-[10px] text-ink-faint">
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((x) => (
+              <span key={x}>{x}</span>
+            ))}
+            {Array.from({ length: 35 }, (_, i) => (
+              <button
+                key={i}
+                className={`aspect-square rounded-full text-xs ${i === 8 ? "bg-ink text-ivory" : "hover:bg-ivory-alt"}`}
+              >
+                {i < 3 || i > 32 ? "" : i - 2}
+              </button>
+            ))}
+          </div>
+          <div className="rule my-6" />
+          <div className="eyebrow mb-3">
+            Available times · Monday, October 5
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              "10:00 AM",
+              "12:00 PM",
+              "2:00 PM",
+              "3:30 PM",
+              "4:00 PM",
+              "5:00 PM",
+            ].map((t, i) => (
+              <button
+                key={t}
+                className={`rounded-full border px-3 py-2.5 text-xs ${i === 2 ? "border-ink bg-ink text-ivory" : "border-border"}`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </section>
+        <section>
+          <div className="space-y-4">
+            <Field label="Your name" placeholder="Full name" />
+            <Field
+              label="Email address"
+              placeholder="you@example.com"
+              type="email"
+            />
+            <div>
+              <Label>What would you like to discuss?</Label>
+              <textarea
+                className="field min-h-32 resize-y"
+                placeholder="Measurements, a custom piece, an idea..."
+              />
+            </div>
+            <div>
+              <Label>Consultation format</Label>
+              <select className="field">
+                <option>Atelier appointment</option>
+                <option>Video consultation</option>
+              </select>
+            </div>
+            <Button>Confirm October 5, 2pm</Button>
+          </div>
+        </section>
+      </div>
+    </PageShell>
+  );
+}

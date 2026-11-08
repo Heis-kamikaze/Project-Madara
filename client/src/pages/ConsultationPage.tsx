@@ -1,4 +1,102 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
-import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
-export default function ConsultationPage(){return <PageShell><BackLink to="/consultations"/><Intro eyebrow="Private salon · Appointment details" title="Your consultation" description="A personal fitting conversation with the Aradam atelier."/><div className="grid gap-6 md:grid-cols-[1fr_.75fr]"><section className="panel p-6 md:p-8"><div className="flex items-center justify-between"><span className="eyebrow">Confirmed appointment</span><span className="rounded-full bg-bronze-light px-3 py-1.5 text-[9px] font-semibold uppercase tracking-wider">Confirmed</span></div><h2 className="serif mt-5 text-3xl">Private fitting & measurements</h2><div className="mt-6 grid grid-cols-2 gap-5"><div><div className="text-[10px] uppercase tracking-widest text-ink-faint">Date</div><p className="mt-2 text-sm">Monday, October 5</p></div><div><div className="text-[10px] uppercase tracking-widest text-ink-faint">Time</div><p className="mt-2 text-sm">2:00 PM</p></div><div><div className="text-[10px] uppercase tracking-widest text-ink-faint">Format</div><p className="mt-2 text-sm">Atelier appointment</p></div><div><div className="text-[10px] uppercase tracking-widest text-ink-faint">Reference</div><p className="mt-2 text-sm">SAL—2084</p></div></div><div className="rule my-6"/><p className="text-xs leading-6 text-ink-soft">Please bring any reference images or notes that will help us understand what you have in mind.</p><div className="mt-5 flex gap-3"><Button>Reschedule</Button><Button outline>Cancel appointment</Button></div></section><aside className="swatch sw-espresso flex min-h-[260px] flex-col justify-end p-7 text-ivory"><div className="eyebrow !text-bronze-light">The private salon</div><h3 className="serif mt-2 text-3xl">Made around you.</h3><p className="mt-2 max-w-xs text-xs leading-6 text-white/65">A considered conversation about fit, form and the details that matter.</p></aside></div></PageShell>}
+import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  Clock3,
+  Heart,
+  Mail,
+  MapPin,
+  Minus,
+  Plus,
+  ShieldCheck,
+  ShoppingBag,
+  SlidersHorizontal,
+  Sparkles,
+  Star,
+  Truck,
+} from "lucide-react";
+import {
+  PageShell,
+  Intro,
+  Label,
+  Field,
+  Button,
+  Swatch,
+  Price,
+  ProductCard,
+  CollectionCard,
+  BackLink,
+  Stat,
+  EmptyState,
+} from "../components/Ui";
+export default function ConsultationPage() {
+  return (
+    <PageShell>
+      <BackLink to="/consultations" />
+      <Intro
+        eyebrow="Private salon · Appointment details"
+        title="Your consultation"
+        description="A personal fitting conversation with the Aradam atelier."
+      />
+      <div className="grid gap-6 md:grid-cols-[1fr_.75fr]">
+        <section className="panel p-6 md:p-8">
+          <div className="flex items-center justify-between">
+            <span className="eyebrow">Confirmed appointment</span>
+            <span className="rounded-full bg-bronze-light px-3 py-1.5 text-[9px] font-semibold uppercase tracking-wider">
+              Confirmed
+            </span>
+          </div>
+          <h2 className="serif mt-5 text-3xl">
+            Private fitting & measurements
+          </h2>
+          <div className="mt-6 grid grid-cols-2 gap-5">
+            <div>
+              <div className="text-[10px] uppercase tracking-widest text-ink-faint">
+                Date
+              </div>
+              <p className="mt-2 text-sm">Monday, October 5</p>
+            </div>
+            <div>
+              <div className="text-[10px] uppercase tracking-widest text-ink-faint">
+                Time
+              </div>
+              <p className="mt-2 text-sm">2:00 PM</p>
+            </div>
+            <div>
+              <div className="text-[10px] uppercase tracking-widest text-ink-faint">
+                Format
+              </div>
+              <p className="mt-2 text-sm">Atelier appointment</p>
+            </div>
+            <div>
+              <div className="text-[10px] uppercase tracking-widest text-ink-faint">
+                Reference
+              </div>
+              <p className="mt-2 text-sm">SAL—2084</p>
+            </div>
+          </div>
+          <div className="rule my-6" />
+          <p className="text-xs leading-6 text-ink-soft">
+            Please bring any reference images or notes that will help us
+            understand what you have in mind.
+          </p>
+          <div className="mt-5 flex gap-3">
+            <Button>Reschedule</Button>
+            <Button outline>Cancel appointment</Button>
+          </div>
+        </section>
+        <aside className="swatch sw-espresso flex min-h-[260px] flex-col justify-end p-7 text-ivory">
+          <div className="eyebrow !text-bronze-light">The private salon</div>
+          <h3 className="serif mt-2 text-3xl">Made around you.</h3>
+          <p className="mt-2 max-w-xs text-xs leading-6 text-white/65">
+            A considered conversation about fit, form and the details that
+            matter.
+          </p>
+        </aside>
+      </div>
+    </PageShell>
+  );
+}
