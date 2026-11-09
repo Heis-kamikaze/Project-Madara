@@ -1,4 +1,64 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
-import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
-export default function CheckoutCompletePage(){return <PageShell><div className="mx-auto max-w-2xl py-12 text-center md:py-20"><div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-bronze-light text-bronze"><Check size={28}/></div><div className="eyebrow mt-7">Order received · AR—10482</div><h1 className="serif mt-3 text-5xl">A piece of Aradam<br/><i>is on its way.</i></h1><p className="mx-auto mt-5 max-w-md text-sm leading-7 text-ink-soft">Thank you for choosing the atelier. Your order is confirmed, and we will keep you updated as it moves through the making and delivery process.</p><div className="panel mt-9 p-6 text-left"><div className="flex justify-between text-xs"><span className="text-ink-faint">Confirmation sent to</span><span>amina@example.com</span></div><div className="rule my-4"/><div className="flex justify-between text-xs"><span className="text-ink-faint">Order reference</span><span>AR—10482</span></div><div className="rule my-4"/><div className="flex justify-between text-xs"><span className="text-ink-faint">Estimated delivery</span><span>3–5 working days</span></div></div><div className="mt-8 flex justify-center gap-3"><Link to="/orders" className="btn-primary">View order</Link><Link to="/pieces" className="btn-outline">Continue exploring</Link></div></div></PageShell>}
+import { Link, useSearchParams } from 'react-router-dom'
+import { useVerifyPayment } from '../api/orders'
+import ErrorMessage from '../components/ui/ErrorMessage'
+import Loading from '../components/ui/Loading'
+import { usePageTitle } from '../hooks/usePageTitle'
+
+const wrap = 'mx-auto max-w-md pt-8 text-center lg:pt-16'
+
+/** Paystack sends the customer back here with ?reference=… — confirm it with the API. */
+export default function CheckoutCompletePage() {
+  usePageTitle('Payment')
+  const [params] = useSearchParams()
+  const reference = params.get('reference') ?? params.get('trxref')
+  const verify = useVerifyPayment(reference)
+
+  if (!reference) {
+    return (
+      <section className={wrap}>
+        <h1 className="font-serif text-[24px]">Payment</h1>
+        <p className="mt-3 text-[12.5px] leading-relaxed text-ink-soft">We could not find a payment reference. If you were charged, check your orders or contact us.</p>
+        <Link to="/account/orders" className="btn btn-outline btn-sm mt-6">My orders</Link>
+      </section>
+    )
+  }
+  if (verify.isLoading) return <Loading label="Confirming your payment…" />
+  if (verify.error) {
+    return (
+      <section className={wrap}>
+        <h1 className="font-serif text-[24px]">We could not confirm your payment</h1>
+        <ErrorMessage error={verify.error} />
+        <p className="mt-3 text-[12.5px] leading-relaxed text-ink-soft">If you were charged, do not pay again. Your order will update automatically.</p>
+        <Link to="/account/orders" className="btn btn-outline btn-sm mt-6">My orders</Link>
+      </section>
+    )
+  }
+
+  const result = verify.data
+  if (result?.paid) {
+    return (
+      <section className={wrap}>
+        <p className="eyebrow">Thank you</p>
+        <h1 data-anim="reveal" className="mt-2 font-serif text-[26px]">Payment received</h1>
+        <p className="mt-3 text-[12.5px] leading-relaxed text-ink-soft">Order {result.orderNumber} is confirmed. We will update you in your inbox as it moves along.</p>
+        <Link to={`/account/orders/${result.orderId}`} className="btn mt-6">View order</Link>
+      </section>
+    )
+  }
+  if (result?.status === 'needs_attention') {
+    return (
+      <section className={wrap}>
+        <h1 className="font-serif text-[24px]">We are reviewing your order</h1>
+        <p className="mt-3 text-[12.5px] leading-relaxed text-ink-soft">We received your payment for order {result.orderNumber} but need to check something. Our team will contact you shortly.</p>
+        <Link to={`/account/orders/${result.orderId}`} className="btn btn-outline btn-sm mt-6">View order</Link>
+      </section>
+    )
+  }
+  return (
+    <section className={wrap}>
+      <h1 className="font-serif text-[24px]">Payment not completed</h1>
+      <p className="mt-3 text-[12.5px] leading-relaxed text-ink-soft">Your payment for order {result?.orderNumber} did not go through. You can try again from the order page.</p>
+      {result ? <Link to={`/account/orders/${result.orderId}`} className="btn mt-6">Back to the order</Link> : null}
+    </section>
+  )
+}

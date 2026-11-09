@@ -1,102 +1,52 @@
-import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Check,
-  CheckCircle2,
-  ChevronRight,
-  Clock3,
-  Heart,
-  Mail,
-  MapPin,
-  Minus,
-  Plus,
-  ShieldCheck,
-  ShoppingBag,
-  SlidersHorizontal,
-  Sparkles,
-  Star,
-  Truck,
-} from "lucide-react";
-import {
-  PageShell,
-  Intro,
-  Label,
-  Field,
-  Button,
-  Swatch,
-  Price,
-  ProductCard,
-  CollectionCard,
-  BackLink,
-  Stat,
-  EmptyState,
-} from "../components/Ui";
+import { useParams } from 'react-router-dom'
+import { useCancelConsultation, useConsultation } from '../api/consultations'
+import ErrorMessage from '../components/ui/ErrorMessage'
+import Loading from '../components/ui/Loading'
+import StatusBadge from '../components/ui/StatusBadge'
+import { usePageTitle } from '../hooks/usePageTitle'
+import { formatDate, humanize } from '../lib/format'
+
 export default function ConsultationPage() {
+  const { id } = useParams()
+  const { data: c, isLoading, error } = useConsultation(id)
+  usePageTitle('Consultation')
+  const cancel = useCancelConsultation()
+
+  if (isLoading) return <Loading />
+  if (error || !c) return <ErrorMessage error={error ?? new Error('Consultation not found')} />
+
   return (
-    <PageShell>
-      <BackLink to="/consultations" />
-      <Intro
-        eyebrow="Private salon · Appointment details"
-        title="Your consultation"
-        description="A personal fitting conversation with the Aradam atelier."
-      />
-      <div className="grid gap-6 md:grid-cols-[1fr_.75fr]">
-        <section className="panel p-6 md:p-8">
-          <div className="flex items-center justify-between">
-            <span className="eyebrow">Confirmed appointment</span>
-            <span className="rounded-full bg-bronze-light px-3 py-1.5 text-[9px] font-semibold uppercase tracking-wider">
-              Confirmed
-            </span>
-          </div>
-          <h2 className="serif mt-5 text-3xl">
-            Private fitting & measurements
-          </h2>
-          <div className="mt-6 grid grid-cols-2 gap-5">
-            <div>
-              <div className="text-[10px] uppercase tracking-widest text-ink-faint">
-                Date
-              </div>
-              <p className="mt-2 text-sm">Monday, October 5</p>
-            </div>
-            <div>
-              <div className="text-[10px] uppercase tracking-widest text-ink-faint">
-                Time
-              </div>
-              <p className="mt-2 text-sm">2:00 PM</p>
-            </div>
-            <div>
-              <div className="text-[10px] uppercase tracking-widest text-ink-faint">
-                Format
-              </div>
-              <p className="mt-2 text-sm">Atelier appointment</p>
-            </div>
-            <div>
-              <div className="text-[10px] uppercase tracking-widest text-ink-faint">
-                Reference
-              </div>
-              <p className="mt-2 text-sm">SAL—2084</p>
-            </div>
-          </div>
-          <div className="rule my-6" />
-          <p className="text-xs leading-6 text-ink-soft">
-            Please bring any reference images or notes that will help us
-            understand what you have in mind.
-          </p>
-          <div className="mt-5 flex gap-3">
-            <Button>Reschedule</Button>
-            <Button outline>Cancel appointment</Button>
-          </div>
-        </section>
-        <aside className="swatch sw-espresso flex min-h-[260px] flex-col justify-end p-7 text-ivory">
-          <div className="eyebrow !text-bronze-light">The private salon</div>
-          <h3 className="serif mt-2 text-3xl">Made around you.</h3>
-          <p className="mt-2 max-w-xs text-xs leading-6 text-white/65">
-            A considered conversation about fit, form and the details that
-            matter.
-          </p>
-        </aside>
-      </div>
-    </PageShell>
-  );
+    <article className="pt-1 lg:mx-auto lg:max-w-xl lg:pt-6">
+      <p className="eyebrow">Private Salon</p>
+      <h1 className="mt-1 font-serif text-[24px]">{humanize(c.type)}</h1>
+      <p className="mt-2"><StatusBadge status={c.status} /></p>
+      <dl className="mt-4">
+        <dt>Requested time</dt>
+        <dd>{formatDate(c.requestedSlot, true)}</dd>
+        <dt>Confirmed time</dt>
+        <dd>{c.scheduledAt ? formatDate(c.scheduledAt, true) : 'Not confirmed yet'}</dd>
+      </dl>
+      {c.notes ? <p className="mt-4 whitespace-pre-wrap text-[12.5px] leading-relaxed text-ink-soft">{c.notes}</p> : null}
+      {c.measurements ? (
+        <ul aria-label="Measurements" className="mt-4 text-[12.5px] text-ink-soft">
+          {Object.entries(c.measurements).map(([name, value]) => (
+            <li key={name}>{name}: {value} cm</li>
+          ))}
+        </ul>
+      ) : null}
+      {c.referenceImageUrls.length > 0 ? (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {c.referenceImageUrls.map((url) => (
+            <img key={url} src={url} alt="Reference" className="size-28 rounded-md object-cover" />
+          ))}
+        </div>
+      ) : null}
+      {c.status === 'requested' || c.status === 'confirmed' ? (
+        <button type="button" disabled={cancel.isPending} onClick={() => cancel.mutate(c.id)} className="btn btn-outline btn-sm mt-6">
+          Cancel consultation
+        </button>
+      ) : null}
+      <ErrorMessage error={cancel.error} />
+    </article>
+  )
 }

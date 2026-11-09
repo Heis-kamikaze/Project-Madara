@@ -10,7 +10,7 @@ export type NewOrder = {
 
 export const useCreateOrder = () => useApiMutation((body: NewOrder) => api.post<Order>('/orders', body), [['orders']])
 
-export const useMyOrders = () => usePaged<Order>(['orders', 'mine'], '/orders/mine', { limit: 20 })
+export const useMyOrders = (enabled = true) => usePaged<Order>(['orders', 'mine'], '/orders/mine', { limit: 20 }, enabled)
 
 export const useOrder = (id: string | undefined) =>
   useGet<Order>(['orders', 'one', id], `/orders/${id}`, undefined, { enabled: !!id })

@@ -64,7 +64,7 @@ export default function AdminSupportPage() {
                 {active.status === 'open' ? 'Mark resolved' : 'Reopen'}
               </button>
             ) : null}
-            {canReply ? <ChatThread conversation={active} staff /> : <p>You can read this conversation but not reply.</p>}
+            {canReply ? <ChatThread conversation={active} staff tone="light" /> : <p>You can read this conversation but not reply.</p>}
           </div>
         ) : null}
       </div>

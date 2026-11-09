@@ -1,0 +1,237 @@
+/*
+ * Aradam design system (from "Aradam — Full App Redesign").
+ * Import once, right after Tailwind, in src/index.css:
+ *
+ *   @import "tailwindcss";
+ *   @import "./styles/aradam.css";
+ *
+ * Tokens become Tailwind utilities automatically:
+ *   bg-bg  bg-bg-alt  bg-card  text-ink  text-ink-soft  text-ink-faint  text-gold  bg-gold-light
+ *   border-line  text-burnt  bg-espresso  font-serif  font-sans …
+ */
+
+@theme {
+  --color-bg: #fdf9ee;
+  --color-bg-alt: #f2ede3;
+  --color-card: #ffffff;
+  --color-ink: #1c1c15;
+  --color-ink-soft: rgb(28 28 21 / 0.62);
+  --color-ink-faint: rgb(28 28 21 / 0.4);
+  --color-gold: #785d32;
+  --color-gold-bright: #a67c3d;
+  --color-gold-light: #fedeaa;
+  --color-line: #e6decf;
+  --color-muted: #74787a;
+  --color-burgundy: #5e0e1b;
+  --color-burnt: #b5471a;
+  --color-sun: #d98f0e;
+  --color-espresso: #2e1a16;
+
+  --font-serif: 'Bodoni Moda', Georgia, serif;
+  --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+
+  --breakpoint-xs: 26rem;
+}
+
+/* ───────────────────────── Base ───────────────────────── */
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+  ::selection {
+    background: var(--color-gold-light);
+    color: var(--color-espresso);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold-bright);
+    outline-offset: 2px;
+  }
+
+  /* Form controls: same look everywhere (customer pages and staff tools). */
+  input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='range']):not([type='color']),
+  select,
+  textarea {
+    width: 100%;
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.6);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--color-ink);
+  }
+  input:not([type='checkbox']):not([type='radio']):focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--color-gold-bright);
+    outline: none;
+  }
+  textarea { resize: vertical; }
+  input::placeholder, textarea::placeholder { color: var(--color-muted); }
+  input[type='search']::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
+  input[type='checkbox'], input[type='radio'] {
+    accent-color: var(--color-ink);
+    width: 15px;
+    height: 15px;
+    margin-right: 8px;
+    vertical-align: -2px;
+  }
+  input[type='file'] { font-size: 12px; max-width: 100%; }
+  input:disabled, select:disabled, textarea:disabled, button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* <label><span>Text</span> <control/></label>  →  small uppercase field label */
+  label > span:first-child:not(:last-child) {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+  label > small { display: block; margin-top: 6px; font-size: 11px; color: var(--color-ink-faint); }
+  label { display: block; }
+  form { display: flex; flex-direction: column; gap: 18px; }
+  fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+  legend {
+    margin-bottom: 8px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  /* Buttons without a class get the quiet outline pill; submit buttons get the solid one. */
+  button:where(:not([class])) {
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.6);
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  button:where(:not([class])):hover { background: var(--color-bg-alt); }
+  button[type='submit']:where(:not([class])) {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-bg);
+    padding: 12px 20px;
+  }
+  button[type='submit']:where(:not([class])):hover { background: var(--color-espresso); }
+
+  a:where(:not([class])) {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  [role='alert'] { color: var(--color-burnt); font-size: 12px; line-height: 1.5; }
+  [role='status'] { color: var(--color-ink-soft); font-size: 12px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--color-line);
+  }
+  td { padding: 12px 8px; border-bottom: 1px solid var(--color-line); vertical-align: top; }
+  code { font-size: 11px; background: var(--color-bg-alt); padding: 1px 5px; border-radius: 4px; word-break: break-all; }
+  summary { cursor: pointer; }
+  dt { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-ink-soft); margin-top: 12px; }
+  dd { margin: 2px 0 0; font-size: 13px; }
+  address { font-style: normal; font-size: 13px; line-height: 1.6; color: var(--color-ink-soft); }
+  hr { border: 0; border-top: 1px solid var(--color-line); }
+}
+
+/* ─────────────────────── Components ─────────────────────── */
+@layer components {
+  /* Primary action: full pill. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    border: 1px solid var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-bg);
+    padding: 13px 22px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .btn:hover { background: var(--color-espresso); border-color: var(--color-espresso); }
+  .btn-outline { background: transparent; color: var(--color-ink); border-color: var(--color-line); }
+  .btn-outline:hover { background: var(--color-bg-alt); border-color: var(--color-line); }
+  .btn-gold { background: var(--color-gold-light); color: var(--color-espresso); border-color: var(--color-gold-light); }
+  .btn-gold:hover { background: #fbd38d; border-color: #fbd38d; }
+  .btn-sm { padding: 9px 16px; font-size: 10.5px; }
+  .btn-block { display: flex; width: 100%; }
+
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+  .tag {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+  .price { font-family: var(--font-serif); }
+  .divider { height: 1px; background: var(--color-line); margin: 18px 0; }
+  .card {
+    border: 1px solid var(--color-line);
+    border-radius: 10px;
+    background: rgb(255 255 255 / 0.5);
+  }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Placeholder artwork used when a piece/collection has no photo yet. */
+  .swatch { position: relative; overflow: hidden; border-radius: 6px; }
+  .swatch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 30% 20%, rgb(255 255 255 / 0.18), transparent 60%);
+  }
+  .sw-flame { background: linear-gradient(155deg, var(--color-burnt) 0%, var(--color-sun) 45%, var(--color-burgundy) 100%); }
+  .sw-espresso { background: linear-gradient(155deg, #4a2e1f 0%, var(--color-espresso) 100%); }
+  .sw-clay { background: linear-gradient(155deg, #a9744a 0%, #6e4526 100%); }
+  .sw-linen { background: linear-gradient(155deg, #c9bfa6 0%, #8f8368 100%); }
+  .sw-garden { background: linear-gradient(160deg, var(--color-sun) 0%, var(--color-burgundy) 70%); }
+  .sw-portrait1 { background: linear-gradient(160deg, #3a2a20, #171310); }
+  .sw-portrait2 { background: linear-gradient(160deg, #5c4530, #241c14); }
+  .sw-portrait3 { background: linear-gradient(160deg, #7a5c3a, #2c2114); }
+  .sw-video { background: linear-gradient(200deg, #7a3a1a 0%, #2c1712 55%, #100b09 100%); }
+  .sw-vase { background: radial-gradient(circle at 50% 30%, #f4ecd8, #cbbf9e 60%, #a89a76 100%); }
+  .sw-map { background: linear-gradient(160deg, #2e5f4f, #173226); }
+}

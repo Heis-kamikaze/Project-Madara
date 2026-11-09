@@ -16,6 +16,9 @@ import { auth } from '../lib/firebase'
 import type { AuthMe, Permission } from '../types/api'
 import { AuthContext, type AuthState } from './context'
 
+/** Cache entries that belong to the signed-in person. Public pages (catalogue, museum, team…) are left alone. */
+const PRIVATE_ROOTS = new Set(['orders', 'consultations', 'closet', 'inbox', 'support', 'users', 'admin', 'payments'])
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient()
   const [status, setStatus] = useState<AuthState['status']>('loading')
@@ -25,6 +28,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // While sign-up is running it registers the profile itself (with the chosen name),
   // so the auth listener must not race it.
   const signingUp = useRef(false)
+  // True once someone has been signed in during this visit, so we only wipe private data on a real sign-out.
+  const hadUser = useRef(false)
 
   const loadMe = useCallback(async (displayName?: string | null): Promise<void> => {
     let res = await api.get<AuthMe>('/auth/me')
@@ -43,10 +48,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!user) {
         setMe(null)
         setBootError(null)
-        queryClient.clear()
+        // Do NOT clear the whole cache here: this callback also fires on every fresh page load for signed-out
+        // visitors, and clearing would cancel the page's own in-flight requests (leaving it stuck on "Loading…").
+        if (hadUser.current) {
+          queryClient.removeQueries({
+            predicate: (q) => PRIVATE_ROOTS.has(String(q.queryKey[0])) || (q.queryKey[0] === 'authenticity' && q.queryKey[1] === 'codes'),
+          })
+        }
+        hadUser.current = false
         setStatus('signedOut')
         return
       }
+      hadUser.current = true
       try {
         await loadMe(user.displayName)
         setBootError(null)

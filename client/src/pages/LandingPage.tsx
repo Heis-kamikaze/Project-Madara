@@ -1,102 +1,79 @@
-import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Check,
-  CheckCircle2,
-  ChevronRight,
-  Clock3,
-  Heart,
-  Mail,
-  MapPin,
-  Minus,
-  Plus,
-  ShieldCheck,
-  ShoppingBag,
-  SlidersHorizontal,
-  Sparkles,
-  Star,
-  Truck,
-} from "lucide-react";
-import {
-  PageShell,
-  Intro,
-  Label,
-  Field,
-  Button,
-  Swatch,
-  Price,
-  ProductCard,
-  CollectionCard,
-  BackLink,
-  Stat,
-  EmptyState,
-} from "../components/Ui";
+import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
+import { useCollection } from '../api/collections'
+import { useProducts } from '../api/products'
+import { useLanding } from '../api/site'
+import ErrorMessage from '../components/ui/ErrorMessage'
+import ProductCard from '../components/ui/ProductCard'
+import { usePageTitle } from '../hooks/usePageTitle'
+import { dailyShuffle } from '../lib/swatch'
+
+/** Home & editorial stream: the runway film, then an unordered "shop window" of pieces. */
 export default function LandingPage() {
+  usePageTitle('')
+  const landing = useLanding()
+  const featured = useCollection(landing.data?.featuredCollectionId ?? undefined)
+  const pieces = useProducts({ limit: 24, sort: 'release', order: 'desc' })
+  const stream = useMemo(() => dailyShuffle(pieces.data ?? []).slice(0, 12), [pieces.data])
+  const l = landing.data
+
   return (
-    <PageShell wide>
-      <section className="page-wrap">
-        <div className="grid items-center gap-8 py-5 md:grid-cols-[.9fr_1.1fr] md:py-10">
-          <div className="order-2 md:order-1">
-            <div className="eyebrow mb-4">The Aradam Atelier · Lagos</div>
-            <h1 className="serif max-w-xl text-5xl leading-[1.02] md:text-7xl">
-              A house built
-              <br />
-              around <i>craft.</i>
-            </h1>
-            <p className="mt-6 max-w-md text-sm leading-7 text-ink-soft">
-              Considered pieces, made slowly and worn for a long time. Discover
-              the current collection and the stories stitched into every detail.
+    <div className="pt-1 lg:pt-4">
+      <section data-anim="hero" className="relative overflow-hidden rounded-md lg:rounded-xl">
+        {l?.heroVideoUrl ? (
+          <video
+            src={l.heroVideoUrl}
+            poster={l.heroPosterUrl ?? undefined}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            className="h-[260px] w-full object-cover sm:h-[360px] lg:h-[560px]"
+          />
+        ) : (
+          <div className="swatch sw-video h-[260px] w-full sm:h-[360px] lg:h-[560px]" aria-hidden="true" />
+        )}
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent p-5 text-bg lg:p-10">
+          <h1 data-anim="reveal" className="font-serif text-[clamp(28px,5vw,56px)] leading-[1.05]">
+            {l?.headline ?? 'Aradam'}
+          </h1>
+          {l?.subheadline ? (
+            <p data-anim="reveal" className="mt-2 max-w-[520px] text-[13px] text-bg/80 lg:text-[15px]">
+              {l.subheadline}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/pieces" className="btn-primary">
-                Explore the pieces <ArrowRight size={15} />
-              </Link>
-              <Link to="/collections" className="btn-outline">
-                View collections
-              </Link>
-            </div>
-            <div className="mt-14 grid max-w-sm grid-cols-3 border-t border-border pt-5">
-              <Stat value="01" label="Atelier" />
-              <Stat value="100%" label="Hand finished" />
-              <Stat value="∞" label="Stories" />
-            </div>
-          </div>
-          <div className="order-1 md:order-2">
-            <div className="swatch sw-garden relative aspect-[.92] md:aspect-[1.12]">
-              <div className="absolute inset-x-6 bottom-6 text-ivory">
-                <p className="eyebrow !text-bronze-light">
-                  Garden Collection 2026
-                </p>
-                <p className="serif mt-2 text-4xl md:text-6xl">
-                  In full bloom.
-                </p>
-                <p className="mt-2 text-xs text-white/75">
-                  Current runway film · Editorial preview
-                </p>
-              </div>
-              <span className="absolute right-6 top-6 rounded-full border border-white/40 px-4 py-2 text-[9px] uppercase tracking-widest text-white">
-                Play film ↗
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="mb-6 mt-14 flex items-end justify-between">
-          <div>
-            <div className="eyebrow">The shop window</div>
-            <h2 className="serif mt-2 text-3xl">Pieces, at random.</h2>
-          </div>
-          <Link to="/pieces" className="text-xs underline underline-offset-4">
-            View all pieces
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <ProductCard />
-          <ProductCard name="Desert Knit" price="₦52,000" kind="clay" />
-          <ProductCard name="Night Study" price="₦39,000" kind="espresso" />
-          <ProductCard name="Linen Form" price="₦45,500" kind="linen" />
+          ) : null}
         </div>
       </section>
-    </PageShell>
-  );
+
+      <div className="mt-3 flex flex-wrap items-end justify-between gap-3 lg:mt-5">
+        <div>
+          <p className="tag">{featured.data?.collection ? featured.data.collection.title : 'Current runway film'}</p>
+          <p className="mt-1 font-serif text-[13px] text-ink-soft">The house's rotating shop window</p>
+        </div>
+        {featured.data?.collection ? (
+          <Link to={`/collections/${featured.data.collection.slug}`} className="btn btn-outline btn-sm">
+            Explore the collection
+          </Link>
+        ) : null}
+      </div>
+      <ErrorMessage error={landing.error} />
+
+      <div className="divider lg:my-10" />
+      <p className="mb-3 text-[10px] uppercase tracking-[0.08em] text-ink-faint">As you scroll — pieces, at random</p>
+      <ul data-anim="stagger" className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+        {stream.map((p) => (
+          <li key={p.id}>
+            <ProductCard slug={p.slug} title={p.title} priceNgn={p.priceNgn} imageUrl={p.imageUrls[0]} status={p.status} />
+          </li>
+        ))}
+      </ul>
+      {pieces.data && pieces.data.length === 0 ? <p className="text-[13px] text-ink-faint">New pieces are on their way.</p> : null}
+      <div className="mt-8 text-center">
+        <Link to="/pieces" className="btn btn-outline btn-sm">
+          See all singles
+        </Link>
+      </div>
+    </div>
+  )
 }

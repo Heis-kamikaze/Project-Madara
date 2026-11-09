@@ -1,4 +1,22 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
-import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
-export default function SupportPage(){return <PageShell><Intro eyebrow="The help concierge" title="How can we help?" description="A real person from the atelier will get back to you within 12 hours — sooner if it concerns an order."/><div className="grid gap-8 lg:grid-cols-[.85fr_1.15fr]"><aside className="swatch sw-espresso flex min-h-[330px] flex-col justify-between p-7 text-ivory"><div><div className="eyebrow !text-bronze-light">At your service</div><h2 className="serif mt-3 text-4xl">A conversation<br/>with the house.</h2></div><div><p className="max-w-xs text-xs leading-6 text-white/65">Questions about a piece, delivery, a fitting or anything else? Leave us a note.</p><p className="mt-5 text-xs text-bronze-light">Typical response · Within 12 hours</p></div></aside><section className="panel p-6 md:p-8"><h2 className="serif text-2xl">Send a message</h2><div className="mt-6 space-y-4"><Field label="Your email" placeholder="you@example.com" type="email"/><div><Label>What is this about?</Label><select className="field"><option>Order enquiry</option><option>Product question</option><option>Consultation</option><option>Something else</option></select></div><div><Label>Your message</Label><textarea className="field min-h-36" placeholder="Tell us how we can help..."/></div><Button>Send to the atelier <ArrowRight size={14}/></Button></div></section></div></PageShell>}
+import { useSearchParams } from 'react-router-dom'
+import HelpPanel from '../components/support/HelpPanel'
+import { usePageTitle } from '../hooks/usePageTitle'
+
+/**
+ * The Help Concierge as a page, for deep links (emails, notifications).
+ * Inside the app it normally opens as an overlay: useHelp().open(). `?message=…` pre-fills the first message.
+ */
+export default function SupportPage() {
+  usePageTitle('Help')
+  const [params] = useSearchParams()
+  return (
+    <section className="mx-auto max-w-md pt-4 lg:pt-12">
+      <h1 className="sr-only">Help</h1>
+      <div className="rounded-[18px] bg-ink p-4 text-bg shadow-[0_20px_40px_rgb(0_0_0/0.2)]">
+        <p className="font-serif text-[15px] italic">Need Help?</p>
+        <p className="mb-3 mt-1 text-[10px] leading-snug text-white/55">We reply within 12 hours — sooner if it's about an order.</p>
+        <HelpPanel initialMessage={params.get('message') ?? ''} />
+      </div>
+    </section>
+  )
+}

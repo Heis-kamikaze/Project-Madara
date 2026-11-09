@@ -1,4 +1,72 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Check, CheckCircle2, ChevronRight, Clock3, Heart, Mail, MapPin, Minus, Plus, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Star, Truck } from 'lucide-react';
-import { PageShell, Intro, Label, Field, Button, Swatch, Price, ProductCard, CollectionCard, BackLink, Stat, EmptyState } from '../components/Ui';
-export default function RegisterPage(){return <PageShell header={false}><div className="mx-auto max-w-md py-8 md:py-14"><Link to="/" className="serif block text-center text-2xl italic tracking-widest">ARADAM</Link><div className="mt-10"><div className="eyebrow">Membership</div><h1 className="serif mt-3 text-4xl">Create account.</h1><p className="mt-3 text-sm leading-6 text-ink-soft">Join the Atelier to access private closets, consultations and archival pieces made for you.</p><div className="mt-7 space-y-5"><Field label="Full name" placeholder="Your name"/><Field label="Email address" placeholder="you@example.com" type="email"/><Field label="Password" placeholder="At least 8 characters" type="password"/><Field label="Confirm password" placeholder="Repeat your password" type="password"/></div><div className="mt-6"><Button>Enter the Atelier <ArrowRight size={14}/></Button></div><p className="mt-6 text-center text-xs text-ink-soft">Already a member? <Link to="/login" className="font-semibold text-bronze underline">Sign in</Link></p></div></div></PageShell>}
+import { useState, type FormEvent } from 'react'
+import { Link, Navigate, useSearchParams } from 'react-router-dom'
+import { authErrorMessage } from '../auth/errors'
+import { useAuth } from '../auth/useAuth'
+import Field from '../components/ui/Field'
+import { usePageTitle } from '../hooks/usePageTitle'
+import { safeNext } from '../lib/safeNext'
+
+export default function RegisterPage() {
+  usePageTitle('Create an account')
+  const { status, signUp, signInWithGoogle } = useAuth()
+  const [params] = useSearchParams()
+  const next = safeNext(params.get('next'), '/account')
+  const [displayName, setDisplayName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [busy, setBusy] = useState(false)
+
+  if (status === 'signedIn') return <Navigate to={next} replace />
+
+  async function run(action: () => Promise<void>) {
+    setBusy(true)
+    setError(null)
+    try {
+      await action()
+    } catch (err) {
+      setError(authErrorMessage(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    void run(() => signUp({ email: email.trim(), password, displayName: displayName.trim() }))
+  }
+
+  return (
+    <section className="mx-auto max-w-sm pt-4 lg:pt-12">
+      <p className="eyebrow">Membership</p>
+      <h1 data-anim="reveal" className="mt-2 font-serif text-[28px]">
+        Create Account
+      </h1>
+      <p className="mb-6 mt-2 text-[12.5px] leading-relaxed text-ink-soft">Join the Atelier to access private closets, consultations, and archival pieces made for you.</p>
+      <form onSubmit={onSubmit}>
+        <Field label="Your name">
+          <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} autoComplete="name" required maxLength={80} />
+        </Field>
+        <Field label="Email">
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" placeholder="you@example.com" required />
+        </Field>
+        <Field label="Password" hint="At least 6 characters">
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" minLength={6} required />
+        </Field>
+        <button type="submit" disabled={busy} className="btn btn-block">
+          {busy ? 'Creating your account…' : 'Enter the Atelier'}
+        </button>
+        {error ? <p role="alert">{error}</p> : null}
+      </form>
+      <button type="button" disabled={busy} onClick={() => void run(signInWithGoogle)} className="btn btn-outline btn-block mt-3">
+        Continue with Google
+      </button>
+      <p className="mt-5 text-center text-[11.5px] text-ink-soft">
+        Already a member?{' '}
+        <Link to={`/login?next=${encodeURIComponent(next)}`} className="font-semibold text-gold underline">
+          Sign In
+        </Link>
+      </p>
+    </section>
+  )
+}

@@ -2,7 +2,7 @@ import { api } from '../lib/api'
 import type { AuthenticityCode, ClosetItem } from '../types/api'
 import { useApiMutation, useGet } from './query'
 
-export const useCloset = () => useGet<ClosetItem[]>(['closet', 'list'], '/closet')
+export const useCloset = (enabled = true) => useGet<ClosetItem[]>(['closet', 'list'], '/closet', undefined, { enabled })
 
 export const useClosetItem = (id: string | undefined) =>
   useGet<ClosetItem>(['closet', 'one', id], `/closet/${id}`, undefined, { enabled: !!id })

@@ -34,16 +34,18 @@ export default function ImageUploader({ value, onChange, upload, max = 8, label 
   return (
     <fieldset>
       <legend>{label}</legend>
-      <ul>
-        {value.map((url) => (
-          <li key={url}>
-            <img src={url} alt="" width={96} height={96} />
-            <button type="button" onClick={() => onChange(value.filter((u) => u !== url))}>
-              Remove
-            </button>
-          </li>
-        ))}
-      </ul>
+      {value.length > 0 ? (
+        <ul className="mb-3 flex flex-wrap gap-3">
+          {value.map((url) => (
+            <li key={url} className="w-24">
+              <img src={url} alt="" className="aspect-square w-24 rounded-md border border-line object-cover" />
+              <button type="button" onClick={() => onChange(value.filter((u) => u !== url))} className="mt-1 text-[10px] text-ink-soft underline">
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
       <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple disabled={busy || value.length >= max} onChange={onFiles} />
       {busy ? <p role="status">Uploading…</p> : null}
       {error ? <p role="alert">{error}</p> : null}

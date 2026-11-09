@@ -21,3 +21,8 @@ export function fromLocalInput(value: string): string | null {
 }
 
 export const humanize = (value: string): string => value.replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase())
+
+export function formatMonthYear(iso: string | null | undefined): string {
+  if (!iso) return ''
+  return new Intl.DateTimeFormat('en-NG', { month: 'long', year: 'numeric' }).format(new Date(iso))
+}

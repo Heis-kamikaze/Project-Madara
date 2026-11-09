@@ -24,16 +24,22 @@ const LINKS: { to: string; label: string; permission: Permission | null; end?: b
 export default function AdminLayout() {
   const { can, me } = useAuth()
   return (
-    <div>
-      <aside>
-        <p>
-          Signed in as <strong>{me?.role}</strong>
-        </p>
+    <div className="lg:grid lg:grid-cols-[210px_minmax(0,1fr)] lg:gap-12">
+      <aside className="mb-8 lg:sticky lg:top-24 lg:mb-0 lg:self-start">
+        <p className="eyebrow mb-3">Atelier admin · {me?.role}</p>
         <nav aria-label="Admin">
-          <ul>
+          <ul className="no-scrollbar -mx-[18px] flex gap-2 overflow-x-auto px-[18px] lg:mx-0 lg:flex-col lg:gap-0.5 lg:overflow-visible lg:px-0">
             {LINKS.filter((l) => l.permission === null || can(l.permission)).map((l) => (
-              <li key={l.to}>
-                <NavLink to={l.to} end={l.end}>
+              <li key={l.to} className="flex-none">
+                <NavLink
+                  to={l.to}
+                  end={l.end}
+                  className={({ isActive }) =>
+                    `block whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[11.5px] transition-colors lg:rounded-md lg:border-0 lg:px-3 lg:py-2 ${
+                      isActive ? 'border-ink bg-ink text-bg lg:bg-bg-alt lg:font-semibold lg:text-ink' : 'border-line text-ink-soft hover:text-ink lg:hover:bg-bg-alt'
+                    }`
+                  }
+                >
                   {l.label}
                 </NavLink>
               </li>
@@ -41,7 +47,7 @@ export default function AdminLayout() {
           </ul>
         </nav>
       </aside>
-      <section>
+      <section className="min-w-0 [&_h1]:mb-5 [&_h1]:text-[26px] [&_h1]:leading-tight [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:text-[19px] [&_h3]:text-[15px] [&_p]:my-2 [&_ul]:space-y-2 [&_li>details]:rounded-md [&_li>details]:border [&_li>details]:border-line [&_li>details]:bg-white/50 [&_li>details]:p-3">
         <Outlet />
       </section>
     </div>

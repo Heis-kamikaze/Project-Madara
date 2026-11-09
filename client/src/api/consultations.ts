@@ -13,7 +13,8 @@ export type NewConsultation = {
 export const useCreateConsultation = () =>
   useApiMutation((body: NewConsultation) => api.post<Consultation>('/consultations', body), [['consultations']])
 
-export const useMyConsultations = () => usePaged<Consultation>(['consultations', 'mine'], '/consultations/mine', { limit: 20 })
+export const useMyConsultations = (enabled = true) =>
+  usePaged<Consultation>(['consultations', 'mine'], '/consultations/mine', { limit: 20 }, enabled)
 
 export const useConsultation = (id: string | undefined) =>
   useGet<Consultation>(['consultations', 'one', id], `/consultations/${id}`, undefined, { enabled: !!id })
