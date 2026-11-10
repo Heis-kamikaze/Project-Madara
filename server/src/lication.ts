@@ -54,16 +54,16 @@ export function createApp() {
     });
   });
 
-  app.use("*", (req, res) => {
-    res.status(404).json({
-      error: {
-        code: "DEBUG_ROUTE_NOT_FOUND",
-        path: req.baseUrl,
-        originalUrl: req.originalUrl,
-        method: req.method,
-      },
-    });
-  });
+  // app.use("*", (req, res) => {
+  //   res.status(404).json({
+  //     error: {
+  //       code: "DEBUG_ROUTE_NOT_FOUND",
+  //       path: req.baseUrl,
+  //       originalUrl: req.originalUrl,
+  //       method: req.method,
+  //     },
+  //   });
+  // });
 
   app.use(maintenance);
   app.use(globalLimiter);

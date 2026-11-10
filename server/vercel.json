@@ -4,11 +4,5 @@
     "dist/index.js": {
       "maxDuration": 10
     }
-  },
-  "rewrites": [
-    {
-      "source": "/((?!dist/).*)",
-      "destination": "/dist/index.js"
-    }
-  ]
+  }
 }
