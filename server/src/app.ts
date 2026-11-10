@@ -42,6 +42,10 @@ export function createApp() {
     res.json({ status: 'ok', service: 'aradam-backend', time: new Date().toISOString() });
   });
 
+  app.get('/', (_req, res) => {
+    res.json({ status: 'ok', time: new Date().toISOString() });
+  });
+
   app.use(maintenance);
   app.use(globalLimiter);
   app.use(env.API_PREFIX, routes);
