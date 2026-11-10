@@ -7,7 +7,7 @@
   },
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!dist/).*)",
       "destination": "/dist/index.js"
     }
   ]
