@@ -1,6 +1,6 @@
 import { env } from './config/env';
 import { logger } from './lib/logger';
-import { createApp } from './app';
+import { createApp } from './lication';
 import * as jobs from './modules/jobs/jobs.service';
 
 const app = createApp();

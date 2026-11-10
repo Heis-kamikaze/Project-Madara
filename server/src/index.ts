@@ -1,5 +1,5 @@
 import express from 'express';
-import { createApp } from './app';
+import { createApp } from './lication';
 
 const app = createApp();
 
