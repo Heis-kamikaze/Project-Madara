@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.5",
     "@tanstack/react-query": "^5.107.1",
+    "@vercel/speed-insights": "^2.1.0",
     "firebase": "^13.2.0",
     "lucide-react": "^1.70.0",
     "react": "^19.3.1",

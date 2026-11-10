@@ -37,5 +37,10 @@
   "private": true,
   "engines": {
     "node": ">=20"
+  },
+  "allowScripts": {
+    "@firebase/util@1.15.3": true,
+    "esbuild@0.28.2": true,
+    "protobufjs@7.6.6": true
   }
 }
