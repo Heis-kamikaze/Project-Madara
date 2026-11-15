@@ -13,6 +13,7 @@ export default function RootLayout() {
           You are signed in, but we could not reach the server: {bootError} Please reload the page to try again.
         </p>
       ) : null}
+      {/* <main className="mx-auto w-full max-w-[1280px] flex-1 pb-20"> */}
       <main className="mx-auto w-full max-w-[1280px] flex-1 px-[18px] pb-20 lg:px-10">
         <Outlet />
       </main>

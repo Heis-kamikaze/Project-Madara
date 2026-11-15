@@ -5,7 +5,7 @@ import { FieldValue, db } from '../../config/firebase';
 import { AppError, conflict, forbidden, notFound } from '../../lib/errors';
 import { snapToObject } from '../../lib/firestore';
 import { authenticityCode, slugify } from '../../lib/ids';
-import { uploadBuffer } from '../../lib/storage';
+import { buildPublicId, uploadBuffer } from '../../lib/storage';
 import type { AuthUser } from '../../types/express';
 import type { AuthenticityCode, Product } from '../../types/models';
 
@@ -53,8 +53,9 @@ export async function createCode(input: NewCode): Promise<AuthenticityCode> {
 
     try {
       const png = await QRCode.toBuffer(verifyUrl(code), { type: 'png', width: 600, margin: 2, errorCorrectionLevel: 'M' });
-      const stored = await uploadBuffer(png, `authenticity/${code}.png`, 'image/png');
-      await ref.update({ qrUrl: stored.url, qrPath: stored.path });
+      // optimize:false keeps the original PNG: QR codes are printed, so no format/quality conversion.
+      const stored = await uploadBuffer(png, buildPublicId('authenticity', code), { resourceType: 'image', contentType: 'image/png', optimize: false });
+      await ref.update({ qrUrl: stored.originalUrl, qrPath: stored.path });
     } catch (err) {
       await ref.delete().catch(() => undefined);
       throw err;

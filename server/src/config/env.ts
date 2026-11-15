@@ -23,7 +23,13 @@ const schema = z.object({
   FIREBASE_PROJECT_ID: z.string().min(1),
   FIREBASE_CLIENT_EMAIL: z.string().email(),
   FIREBASE_PRIVATE_KEY: z.string().min(1),
-  FIREBASE_STORAGE_BUCKET: z.string().min(1),
+
+  // ── Media (Cloudinary) ────────────────────────────────────────────────
+  CLOUDINARY_CLOUD_NAME: z.string().min(1),
+  CLOUDINARY_API_KEY: z.string().min(1),
+  CLOUDINARY_API_SECRET: z.string().min(1),
+  /** Top-level folder for every asset, e.g. "aradam" (use "aradam-dev" for a dev environment). */
+  CLOUDINARY_FOLDER: z.string().regex(/^[A-Za-z0-9_-]+$/, 'letters, numbers, - and _ only').default('aradam'),
 
   // ── Payments (Paystack) ───────────────────────────────────────────────
   PAYSTACK_SECRET_KEY: z.string().min(1),

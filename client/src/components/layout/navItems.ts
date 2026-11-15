@@ -15,7 +15,8 @@ export const NAV_ENTRIES: NavEntry[] = [
   { key: 'archive', label: 'Archive', to: '/collections?view=archive', xlOnly: true },
   { key: 'custom', label: 'Custom', to: '/account/consultations/new', xlOnly: true },
   { key: 'world', label: 'World', to: '/world' },
-  { key: 'journal', label: 'Journal', to: '/community' },
+  { key: 'community', label: 'Community', to: '/community' },
+
 ]
 
 /** Is this nav entry the current location? Handles the Collections vs Archive split (same path). */
